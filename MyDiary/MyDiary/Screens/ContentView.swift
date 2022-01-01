@@ -11,6 +11,7 @@ struct ContentView: View {
     
     @Environment(\.managedObjectContext) var db
     @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "data", ascending: false)]) var days : FetchedResults<Day>
+    @StateObject private var dataController = DataController()
     
     @State private var speed : Double = 5.0
     @State private var isEditing = false
@@ -132,7 +133,10 @@ struct ContentView: View {
             .navigationTitle("My Diary")
             .navigationBarItems(
                 trailing:
-                    Image(systemName: "plus")
+                    
+                    NavigationLink(destination: NewDayView()) {
+                        Image(systemName: "plus")
+                    }
             )
         }
     }
