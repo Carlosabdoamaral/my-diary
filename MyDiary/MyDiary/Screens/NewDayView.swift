@@ -5,6 +5,7 @@
 //  Created by Carlos Amaral on 01/01/22.
 //
 
+import CoreData
 import SwiftUI
 
 struct NewDayView: View {
@@ -18,6 +19,23 @@ struct NewDayView: View {
     @State private var title : String = ""
     @State private var desc : String = ""
     @State private var data : Date = Date()
+    
+    @State private var isShowingAlert : Bool = false
+    
+    func saveDay() {
+        let newDay = Day(context: db)
+        newDay.id = UUID()
+        newDay.sad = self.sad
+        newDay.love = self.love
+        newDay.happy = self.happy
+        newDay.data = self.data
+        newDay.title = self.title
+        newDay.desc = self.desc
+        
+        try? db.save()
+        
+        self.isShowingAlert = true
+    }
     
     var body: some View {
         ZStack {
@@ -38,16 +56,19 @@ struct NewDayView: View {
                     VStack(alignment: .leading) {
                         Text("Happy")
                         Slider(value: $happy, in: 0...10)
+                            .tint(.yellow)
                     } // VSTACK
 
                     VStack(alignment: .leading) {
                         Text("Love")
                         Slider(value: $love, in: 0...10)
+                            .tint(.red)
                     } // VSTACK
                     
                     VStack(alignment: .leading) {
                         Text("Sad")
                         Slider(value: $sad, in: 0...10)
+                            .tint(.gray)
                     } // VSTACK
                     
                 } // VSTACK
@@ -82,27 +103,28 @@ struct NewDayView: View {
                 
                 
                 Button ("Add") {
-                    let newDay = Day(context: db)
-                    newDay.id = UUID()
-                    newDay.sad = self.sad
-                    newDay.love = self.love
-                    newDay.happy = self.happy
-                    newDay.data = self.data
-                    newDay.title = self.title
-                    newDay.desc = self.desc
-                    
-                    try? db.save()
+                    saveDay()
                 }
+                .foregroundColor(.blue)
                 .padding()
                 .padding(.horizontal)
                 .background()
                 .cornerRadius(5)
+                .alert(isPresented: $isShowingAlert) {
+                    Alert(
+                        title: Text("Success!"),
+                        message: Text("You can close this alert and go to home screen to se your diary resume")
+                    )
+                }
+                
                 
                 Spacer()
                 
             } // VSTACK
+            
         } // ZSTACK
         .colorScheme(.light)
+        .environment(\.managedObjectContext, dataController.container.viewContext)
     }
 }
 

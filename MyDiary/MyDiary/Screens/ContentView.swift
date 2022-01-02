@@ -5,20 +5,49 @@
 //  Created by Carlos Amaral on 01/01/22.
 //
 
+import CoreData
 import SwiftUI
 
 struct ContentView: View {
     
     @Environment(\.managedObjectContext) var db
+    
     @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "data", ascending: false)]) var days : FetchedResults<Day>
+    
     @StateObject private var dataController = DataController()
     
     @State private var speed : Double = 5.0
     @State private var isEditing = false
     
-    @State private var happy : Double = 5.0
-    @State private var sad : Double = 1.0
-    @State private var love : Double = 9.0
+    @State private var happy : Double = 0
+    @State private var sad : Double = 0
+    @State private var love : Double = 0
+    
+    @State private var happyValues : [Double] = []
+    @State private var loveValues : [Double] = []
+    @State private var sadValues : [Double] = []
+    
+    func calc() {
+        for day in days {
+            happyValues.append(day.happy)
+        }
+        
+        for k in days {
+            loveValues.append(k.love)
+        }
+        
+        for j in days {
+            sadValues.append(j.sad)
+        }
+        
+        let happyX = happyValues.reduce(0,+)
+        let loveX = loveValues.reduce(0,+)
+        let sadX = sadValues.reduce(0,+)
+        
+        self.happy = Double(Int(happyX) / happyValues.count)
+        self.love = Double(Int(loveX) / loveValues.count)
+        self.sad = Double(Int(sadX) / sadValues.count)
+    }
     
     var body: some View {
         NavigationView {
@@ -45,6 +74,7 @@ struct ContentView: View {
                                 }
                         ){
                             Slider(value: $happy, in: 0...10)
+                                .tint(.yellow)
                         }
                         
                         Section(
@@ -55,7 +85,8 @@ struct ContentView: View {
                                     Spacer()
                                 }
                         ){
-                            Slider(value: $sad, in: 0...10)
+                            Slider(value: $love, in: 0...10)
+                                .tint(.red)
                         }
                         
                         Section(
@@ -66,7 +97,8 @@ struct ContentView: View {
                                     Spacer()
                                 }
                         ){
-                            Slider(value: $love, in: 0...10)
+                            Slider(value: $sad, in: 0...10)
+                                .tint(.gray)
                         }
                     }
                     .padding()
@@ -80,7 +112,7 @@ struct ContentView: View {
                         HStack {
                             ForEach(days) { day in
                                 VStack(alignment: .leading, spacing: 10) {
-                                    Text("\(day.data!)")
+                                    Text(day.data!, format: .dateTime.day().month().year())
                                         .foregroundColor(.gray)
                                         .fontWeight(.bold)
                                         .padding(.vertical)
@@ -90,7 +122,7 @@ struct ContentView: View {
                                         Text("😃")
                                         
                                         HStack {
-                                            Text("\(day.happy.formatted()) / 10")
+                                            Text("\(day.happy, specifier: "%.0f") / 10")
                                                 .font(.body)
                                                 .fontWeight(.bold)
                                         }
@@ -101,7 +133,7 @@ struct ContentView: View {
                                         Text("🥰")
                                         
                                         HStack {
-                                            Text("\(day.love.formatted()) / 10")
+                                            Text("\(day.love, specifier: "%.0f") / 10")
                                                 .font(.body)
                                                 .fontWeight(.bold)
                                         }
@@ -129,6 +161,9 @@ struct ContentView: View {
                     
                     Spacer()
                 }
+                .onAppear {
+                    calc()
+                }
             }
             .navigationTitle("My Diary")
             .navigationBarItems(
@@ -136,6 +171,7 @@ struct ContentView: View {
                     
                     NavigationLink(destination: NewDayView()) {
                         Image(systemName: "plus")
+                            .foregroundColor(.white)
                     }
             )
         }
