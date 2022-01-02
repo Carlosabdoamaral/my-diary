@@ -44,9 +44,23 @@ struct ContentView: View {
         let loveX = loveValues.reduce(0,+)
         let sadX = sadValues.reduce(0,+)
         
-        self.happy = Double(Int(happyX) / happyValues.count)
-        self.love = Double(Int(loveX) / loveValues.count)
-        self.sad = Double(Int(sadX) / sadValues.count)
+        if happyValues.isEmpty {
+            self.happy = 0
+        } else {
+            self.happy = Double(Int(happyX) / happyValues.count)
+        }
+        
+        if loveValues.isEmpty {
+            self.love = 0
+        } else {
+            self.love = Double(Int(loveX) / loveValues.count)
+        }
+        
+        if sadValues.isEmpty {
+            self.sad = 0
+        } else {
+            self.sad = Double(Int(sadX) / sadValues.count)
+        }
     }
     
     var body: some View {
@@ -111,49 +125,52 @@ struct ContentView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(days) { day in
-                                VStack(alignment: .leading, spacing: 10) {
-                                    Text(day.data!, format: .dateTime.day().month().year())
+                                
+                                NavigationLink(destination: DayDetailsView(day: day)) {
+                                    VStack(alignment: .leading, spacing: 10) {
+                                        Text(day.data!, format: .dateTime.day().month().year())
+                                            .foregroundColor(.gray)
+                                            .fontWeight(.bold)
+                                            .padding(.vertical)
+                                            .padding(.horizontal)
+                                        
+                                        HStack {
+                                            Text("😃")
+                                            
+                                            HStack {
+                                                Text("\(day.happy, specifier: "%.0f") / 10")
+                                                    .font(.body)
+                                                    .fontWeight(.bold)
+                                            }
+                                        }
                                         .foregroundColor(.gray)
-                                        .fontWeight(.bold)
-                                        .padding(.vertical)
-                                        .padding(.horizontal)
-                                    
-                                    HStack {
-                                        Text("😃")
                                         
                                         HStack {
-                                            Text("\(day.happy, specifier: "%.0f") / 10")
-                                                .font(.body)
-                                                .fontWeight(.bold)
+                                            Text("🥰")
+                                            
+                                            HStack {
+                                                Text("\(day.love, specifier: "%.0f") / 10")
+                                                    .font(.body)
+                                                    .fontWeight(.bold)
+                                            }
                                         }
-                                    }
-                                    .foregroundColor(.gray)
-                                    
-                                    HStack {
-                                        Text("🥰")
+                                        .foregroundColor(.gray)
                                         
                                         HStack {
-                                            Text("\(day.love, specifier: "%.0f") / 10")
-                                                .font(.body)
-                                                .fontWeight(.bold)
+                                            Text("😔")
+                                            
+                                            HStack {
+                                                Text("\(day.sad, specifier: "%.0f") / 10")
+                                                    .font(.body)
+                                                    .fontWeight(.bold)
+                                            }
                                         }
+                                        .foregroundColor(.gray)
                                     }
-                                    .foregroundColor(.gray)
-                                    
-                                    HStack {
-                                        Text("😔")
-                                        
-                                        HStack {
-                                            Text("\(day.sad.formatted()) / 10")
-                                                .font(.body)
-                                                .fontWeight(.bold)
-                                        }
-                                    }
-                                    .foregroundColor(.gray)
+                                    .padding()
+                                    .background(.white)
+                                    .cornerRadius(15)
                                 }
-                                .padding()
-                                .background(.white)
-                                .cornerRadius(15)
                             }
                             .padding(.leading)
                         }

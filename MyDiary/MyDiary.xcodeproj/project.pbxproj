@@ -14,6 +14,7 @@
 		982333032780FA8E009BE4B5 /* DiaryModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 982333012780FA8E009BE4B5 /* DiaryModel.xcdatamodeld */; };
 		982333092781039C009BE4B5 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982333082781039C009BE4B5 /* DataController.swift */; };
 		9823330B2781071E009BE4B5 /* NewDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9823330A2781071E009BE4B5 /* NewDayView.swift */; };
+		98AD25262781E48300C66ECD /* DayDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AD25252781E48200C66ECD /* DayDetailsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		982333042780FBE3009BE4B5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		982333082781039C009BE4B5 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		9823330A2781071E009BE4B5 /* NewDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDayView.swift; sourceTree = "<group>"; };
+		98AD25252781E48200C66ECD /* DayDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayDetailsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 			children = (
 				982332F52780FA4E009BE4B5 /* ContentView.swift */,
 				9823330A2781071E009BE4B5 /* NewDayView.swift */,
+				98AD25252781E48200C66ECD /* DayDetailsView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -174,6 +177,7 @@
 			files = (
 				982332F62780FA4E009BE4B5 /* ContentView.swift in Sources */,
 				9823330B2781071E009BE4B5 /* NewDayView.swift in Sources */,
+				98AD25262781E48300C66ECD /* DayDetailsView.swift in Sources */,
 				982333092781039C009BE4B5 /* DataController.swift in Sources */,
 				982332F42780FA4E009BE4B5 /* MyDiaryApp.swift in Sources */,
 				982333032780FA8E009BE4B5 /* DiaryModel.xcdatamodeld in Sources */,
